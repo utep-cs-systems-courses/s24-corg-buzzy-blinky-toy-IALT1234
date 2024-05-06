@@ -1,12 +1,27 @@
-//Alternate LEDs from Off, Green, and Red
 #include <msp430.h>
-#include "libTimer.h"
-#include "led.h"
 
-int main(void) {
-  P1DIR |= LEDS;
-  P1OUT &= ~LED_GREEN;
-  P1OUT |= LED_RED;
+#include "led.h"  // Include the LED definitions
 
-  or_sr(0x18);		/* CPU off, GIE on */
+
+
+int main() {
+
+  WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
+
+  P1DIR |= LEDS; // Set LED pins as output
+
+
+
+  while (1) {
+
+    P1OUT |= LED_RED; // Turn on green LED
+
+    __delay_cycles(500000); // Delay for approximately 1 second
+
+    P1OUT &= ~LED_RED; // Turn off green LED
+
+    __delay_cycles(500000); // Delay for approximately 1 second
+
+  }
+
 }
